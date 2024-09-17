@@ -40,16 +40,17 @@ public class CheckoutSolution {
             itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
         }
 
-        // Processa ofertas para o item E (2E get 1B free)
+        // Processa ofertas especiais
+        // Aplica oferta de E (2E get 1B free)
         int countE = itemCounts.getOrDefault('E', 0);
         int freeBs = countE / 2;
         int countB = itemCounts.getOrDefault('B', 0);
 
-        // Aplica a oferta de E para B
+        // Calcula quantos Bs serão gratuitos e ajusta a contagem de Bs
         if (countB > 0) {
             freeBs = Math.min(freeBs, countB);
-            total += freeBs * prices.get('B');
-            itemCounts.put('B', countB - freeBs);
+            total += freeBs * prices.get('B'); // Adiciona o valor dos Bs gratuitos
+            itemCounts.put('B', countB - freeBs); // Reduz a contagem de Bs
         }
 
         // Calcula o total para outros itens considerando ofertas
@@ -73,4 +74,5 @@ public class CheckoutSolution {
         return total;
     }
 }
+
 
