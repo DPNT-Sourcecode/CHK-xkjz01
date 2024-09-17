@@ -42,19 +42,27 @@ public class CheckoutSolution {
             itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
         }
 
-        // Calcula o total com base nas ofertas e preços
+
         for (Map.Entry<Character, Integer> entry : itemCounts.entrySet()) {
             char item = entry.getKey();
             int count = entry.getValue();
             int itemPrice = prices.get(item);
 
             Offer offer = offers.get(item);
+
             if (offer != null) {
+                if(item=='E'){
+                    int freeBs = count/2;
+                    int ramainngE = count%2;
+                    total += ramainngE* itemPrice;
+                    total+= freeBs * prices.get('B'); //ADD CUST OF free B`s
+                } else{
                 int offerCount = count / offer.getQuantity();
                 int remainder = count % offer.getQuantity();
 
                 total += offerCount * offer.getPrice();
                 total += remainder * itemPrice;
+                }
             } else {
                 total += count * itemPrice;
             }
@@ -65,3 +73,4 @@ public class CheckoutSolution {
 
 
 }
+
