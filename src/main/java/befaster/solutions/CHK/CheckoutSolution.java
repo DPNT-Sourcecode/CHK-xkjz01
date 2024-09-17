@@ -41,6 +41,17 @@ public class CheckoutSolution {
         }
 
         // Calcula o total com base nas ofertas e preços
+        int eCount = itemCounts.getOrDefault('E', 0);
+        int bCount = itemCounts.getOrDefault('B', 0);
+
+        // Aplica a oferta de 2E get 1B free
+        int bFreeCount = eCount / 2;
+        if (bCount > 0) {
+            bFreeCount = Math.min(bFreeCount, bCount);
+            total += bFreeCount * prices.get('B');
+            itemCounts.put('B', bCount - bFreeCount);
+        }
+
         for (Map.Entry<Character, Integer> entry : itemCounts.entrySet()) {
             char item = entry.getKey();
             int count = entry.getValue();
@@ -50,16 +61,6 @@ public class CheckoutSolution {
             if (offer != null) {
                 int offerCount = count / offer.getQuantity();
                 int remainder = count % offer.getQuantity();
-
-                if (item == 'E') {
-                    int bCount = itemCounts.getOrDefault('B', 0);
-                    int bFreeCount = offerCount; // 'B' free for each pair of 'E'
-                    if (bCount > 0) {
-                        bFreeCount = Math.min(bFreeCount, bCount);
-                        total += bFreeCount * prices.get('B');
-                        itemCounts.put('B', bCount - bFreeCount);
-                    }
-                }
 
                 total += offerCount * offer.getPrice();
                 total += remainder * itemPrice;
@@ -71,4 +72,23 @@ public class CheckoutSolution {
         return total;
     }
 
+    // Classe para representar as ofertas
+    private static class Offer {
+        private final int quantity;
+        private final int price;
+
+        public Offer(int quantity, int price) {
+            this.quantity = quantity;
+            this.price = price;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+    }
 }
+
