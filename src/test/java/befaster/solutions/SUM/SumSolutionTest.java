@@ -18,12 +18,12 @@ public class SumSolutionTest {
     public void compute_sum() {
         assertEquals(3, sum.compute(1,2));
         assertEquals(7, sum.compute(3,4));
-        assertEquals(10, sum.compute(3,4));
         assertEquals(10,sum.compute(6,4));
         assertEquals(0, sum.compute(0,0));
 
     }
 }
+
 
 
 
