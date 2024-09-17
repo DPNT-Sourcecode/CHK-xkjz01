@@ -4,69 +4,59 @@ import java.util.Map;
 
 public class CheckoutSolution {
 
-    private static final Map<Character, Integer> PRICE_MAP = new HashMap<>();
-    private static final Map<Character, Integer> OFFER_1 = new HashMap<>();
-    private static final Map<Character, Integer> OFFER_2 = new HashMap<>();
-    private static final Map<Character, Integer> OFFER_3 = new HashMap<>();
+    private static final Map<Character, Integer> prices = new HashMap<>();
+    private static final Map<Character, Offer> offers = new HashMap<>();
 
     static {
-        PRICE_MAP.put('A', 50);
-        PRICE_MAP.put('B', 30);
-        PRICE_MAP.put('C', 20);
-        PRICE_MAP.put('D', 15);
-        PRICE_MAP.put('E', 40);
+        // Preço dos itens
+        prices.put('A', 50);
+        prices.put('B', 30);
+        prices.put('E', 40);
 
-        // Offer 1: 3A for 130, 5A for 200
-        OFFER_1.put('A', 3);
-
-        // Offer 2: 2B for 45
-        OFFER_2.put('B', 2);
-
-        // Offer 3: 2E get one B free
-        OFFER_3.put('E', 2);
+        // Ofertas
+        offers.put('A', new Offer(3, 130));
+        offers.put('B', new Offer(2, 45)); // exemplo, se tiver oferta para B
     }
 
-    public static int checkout(String skus) {
-        if (skus == null || !skus.matches("[A-E]*")) {
-            return -1;
+    public static int checkout(String items) {
+        Map<Character, Integer> itemCounts = new HashMap<>();
+        for (char item : items.toCharArray()) {
+            itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
         }
 
-        Map<Character, Integer> basket = new HashMap<>();
-        for (char sku : skus.toCharArray()) {
-            basket.put(sku, basket.getOrDefault(sku, 0) + 1);
+        int totalCost = 0;
+
+        for (Map.Entry<Character, Integer> entry : itemCounts.entrySet()) {
+            char item = entry.getKey();
+            int count = entry.getValue();
+            int itemPrice = prices.get(item);
+
+            Offer offer = offers.get(item);
+            if (offer != null) {
+                int offerQuantity = offer.quantity;
+                int offerPrice = offer.price;
+
+                int offerCount = count / offerQuantity;
+                int remainingCount = count % offerQuantity;
+
+                totalCost += offerCount * offerPrice;
+                totalCost += remainingCount * itemPrice;
+            } else {
+                totalCost += count * itemPrice;
+            }
         }
 
-        int total = 0;
-        int countE = basket.getOrDefault('E', 0);
-        int countB = basket.getOrDefault('B', 0);
+        return totalCost;
+    }
 
-        // Apply offer for E
-        int freeBs = countE / 2;
-        if (freeBs > countB) {
-            freeBs = countB;
+    private static class Offer {
+        int quantity;
+        int price;
+
+        Offer(int quantity, int price) {
+            this.quantity = quantity;
+            this.price = price;
         }
-        countB -= freeBs;
-
-        // Apply offers for A
-        int countA = basket.getOrDefault('A', 0);
-        total += (countA / 5) * 200;
-        countA %= 5;
-        total += (countA / 3) * 130;
-        countA %= 3;
-        total += countA * PRICE_MAP.get('A');
-
-        // Apply offers for B
-        total += (countB / 2) * 45;
-        countB %= 2;
-        total += countB * PRICE_MAP.get('B');
-
-        // Apply offers for C and D
-        total += (basket.getOrDefault('C', 0)) * PRICE_MAP.get('C');
-        total += (basket.getOrDefault('D', 0)) * PRICE_MAP.get('D');
-
-        return total;
     }
 }
-
-
 
