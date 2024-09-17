@@ -4,11 +4,13 @@ import befaster.runner.SolutionNotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
+
 public class CheckoutSolution {
 
     // Tabela de preços e ofertas
     private static final Map<Character, Integer> prices = new HashMap<>();
-    private static final Map<Character, Integer[]> offers = new HashMap<>();
+    private static final Map<Character, Offer> offers = new HashMap<>();
+    private static final int INVALID_INPUT = -1;
 
     static {
         // Prices
@@ -18,8 +20,8 @@ public class CheckoutSolution {
         prices.put('D', 15);
 
         // Offers
-        offers.put('A', new Integer[]{3, 130});  // 3A for 130
-        offers.put('B', new Integer[]{2, 45});   // 2B for 45
+        offers.put('A', new Offer(3, 130));  // 3A for 130
+        offers.put('B', new Offer(2, 45));   // 2B for 45
     }
 
     public static int checkout(String skus) {
@@ -30,10 +32,10 @@ public class CheckoutSolution {
         Map<Character, Integer> itemCounts = new HashMap<>();
         int total = 0;
 
-        // Itens Counting
+        // Contagem de Itens
         for (char item : skus.toCharArray()) {
             if (!prices.containsKey(item)) {
-                return -1;  // Retorna -1 para entrada inválida
+                return INVALID_INPUT;  // Retorna -1 para entrada inválida
             }
             itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
         }
@@ -44,15 +46,12 @@ public class CheckoutSolution {
             int count = entry.getValue();
             int itemPrice = prices.get(item);
 
-            Integer[] offer = offers.get(item);
+            Offer offer = offers.get(item);
             if (offer != null) {
-                int offerQuantity = offer[0];
-                int offerPrice = offer[1];
+                int offerCount = count / offer.getQuantity();
+                int remainder = count % offer.getQuantity();
 
-                int offerCount = count / offerQuantity;
-                int remainder = count % offerQuantity;
-
-                total += offerCount * offerPrice;
+                total += offerCount * offer.getPrice();
                 total += remainder * itemPrice;
             } else {
                 total += count * itemPrice;
@@ -61,6 +60,8 @@ public class CheckoutSolution {
 
         return total;
     }
+
+
 }
 
 
