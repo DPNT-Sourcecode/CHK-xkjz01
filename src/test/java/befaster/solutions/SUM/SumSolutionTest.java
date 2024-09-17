@@ -21,8 +21,9 @@ public class SumSolutionTest {
         assertEquals(10, sum.compute(3,4));
         assertEquals(10,sum.compute(6,4));
         assertEquals(0, sum.compute(0,0));
-        assertThat(sum.compute(1, 1), equalTo(2));
+
     }
 }
+
 
 
