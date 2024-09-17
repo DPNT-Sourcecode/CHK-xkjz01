@@ -25,7 +25,7 @@ public class CheckoutSolution {
     }
 
     int total = 0;
-    Map<Character, Integer> itemcount = new HashMap<>();
+    Map<Character, Integer> itemCount = new HashMap<>();
 
     //conta a quantidade de cada item
        for (char sku : skus.toCharArray()){
@@ -33,4 +33,3 @@ public class CheckoutSolution {
        }
     }
 }
-
