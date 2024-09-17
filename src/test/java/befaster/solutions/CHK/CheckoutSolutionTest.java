@@ -16,9 +16,10 @@ public class CheckoutSolutionTest {
 
     @Test
     public void testCheckoutMultipleItemsNoOffers() {
-        assertEquals(115, checkoutSolution.checkout("ABCD"), "Checkout should return 115 for items A, B, C, D without offers");
-        assertEquals(100, checkoutSolution.checkout("AABCD"), "Checkout should return 100 for items A, A, B, C, D without offers");
-        assertEquals(65, checkoutSolution.checkout("ABCDAB"), "Checkout should return 65 for items A, B, C, D, A, B without offers");
+        // Assuming no offers are applied for these tests
+        assertEquals(50 + 30 + 20 + 15, checkoutSolution.checkout("ABCD"), "Checkout should return the sum of individual items for ABCD");
+        assertEquals(2 * 50 + 30 + 20 + 15, checkoutSolution.checkout("AABCD"), "Checkout should return the sum of items A, A, B, C, D");
+        assertEquals(2 * 50 + 2 * 30 + 20 + 15, checkoutSolution.checkout("ABCDAB"), "Checkout should return the sum of items A, B, C, D, A, B");
     }
 
     @Test
@@ -37,6 +38,7 @@ public class CheckoutSolutionTest {
         assertEquals(80, checkoutSolution.checkout("CCDD"), "Checkout should return 80 for two items C and two items D with offers");
     }
 }
+
 
 
 
