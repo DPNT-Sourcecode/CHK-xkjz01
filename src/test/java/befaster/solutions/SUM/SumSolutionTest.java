@@ -16,12 +16,13 @@ public class SumSolutionTest {
 
     @Test
     public void compute_sum() {
-        assertEquals(3, solution.sum(1,2));
-        assertEquals(7, solution.sum(3,4));
-        assertEquals(10, solution.sum(3,4));
-        assertEquals(10,solution.sum(6,4));
-        assertEquals(0, solution.sum(0,0));
+        assertEquals(3, sum.compute(1,2));
+        assertEquals(7, sum.compute(3,4));
+        assertEquals(10, sum.compute(3,4));
+        assertEquals(10,sum.compute(6,4));
+        assertEquals(0, sum.compute(0,0));
         assertThat(sum.compute(1, 1), equalTo(2));
     }
 }
+
 
