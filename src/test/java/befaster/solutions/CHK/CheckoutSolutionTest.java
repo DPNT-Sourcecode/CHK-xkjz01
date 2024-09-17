@@ -54,7 +54,15 @@ class CheckoutSolutionTest {
         assertEquals(13500, CheckoutSolution.checkout("B".repeat(300))); // 45 + 45 + ... + 45
     }
 
-    
+    @Test
+    public void testItemEWithOffer() {
+        // Testing the offer for 'E'
+        assertEquals(80, CheckoutSolution.checkout("EE")); // 2E, 1 B free, total = 40 + 40 = 80
+        assertEquals(120, CheckoutSolution.checkout("EEE")); // 2E + 1 B free + 1 E = 80 + 40 = 120
+        assertEquals(160, CheckoutSolution.checkout("EEEE")); // 4E, 2 B free = 80 + 60 = 140
+        assertEquals(200, CheckoutSolution.checkout("EEEEE")); // 4E + 1 E = 80 + 40 + 40 = 160
+    }
 }
+
 
 
