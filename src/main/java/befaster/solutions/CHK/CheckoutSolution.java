@@ -23,6 +23,7 @@ public class CheckoutSolution {
         // Offers
         offers.put('A', new Offer(3, 130));  // 3A for 130
         offers.put('B', new Offer(2, 45));
+        offers.put('E', new Offer(2, 80));
 
     }
 
@@ -73,4 +74,5 @@ public class CheckoutSolution {
 
 
 }
+
 
