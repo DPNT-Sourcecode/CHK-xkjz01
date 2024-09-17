@@ -29,7 +29,13 @@ public class CheckoutSolution {
 
     //conta a quantidade de cada item
        for (char sku : skus.toCharArray()){
-           itemCount.put(sku, itemCount.getOrderDefault(sku,0)+1);
+           itemCount.put(sku, itemCount.getOrDefault(sku,0)+1);
        }
+
+    //calcular o total com base nas ofertas
+    for(Map.Entry<Character,Integer> entry : itemCount.entrySet()){
+        
+    }
     }
 }
+
