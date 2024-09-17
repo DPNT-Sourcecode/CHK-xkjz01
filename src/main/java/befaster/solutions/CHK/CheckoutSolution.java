@@ -7,7 +7,7 @@ public class CheckoutSolution {
 
     // Tabela de preços e ofertas
     private static final Map<Character, Integer> prices = new HashMap<>();
-    private static final Map<Character, Offer[]> offers = new HashMap<>();
+    private static final Map<Character, Offer> offers = new HashMap<>();
     private static final int INVALID_INPUT = -1;
 
     static {
@@ -19,9 +19,9 @@ public class CheckoutSolution {
         prices.put('E', 40);
 
         // Offers
-        offers.put('A', new Offer[]{new Offer(5, 200), new Offer(3, 130)});  // 5A for 200, 3A for 130
-        offers.put('B', new Offer[]{new Offer(2, 45)}); // 2B for 45
-        offers.put('E', new Offer[]{new Offer(2, 80)}); // 2E get 1 B free
+        offers.put('A', new Offer(3, 130));  // 3A for 130
+        offers.put('B', new Offer(2, 45));   // 2B for 45
+        offers.put('E', new Offer(2, 80));   // 2E get 1B free
     }
 
     public static int checkout(String skus) {
@@ -46,22 +46,23 @@ public class CheckoutSolution {
             int count = entry.getValue();
             int itemPrice = prices.get(item);
 
-            Offer[] itemOffers = offers.get(item);
-            if (itemOffers != null) {
-                int maxTotal = 0;
-                for (Offer offer : itemOffers) {
-                    int offerCount = count / offer.getQuantity();
-                    int remainder = count % offer.getQuantity();
-                    int offerTotal = offerCount * offer.getPrice() + remainder * itemPrice;
-                    if (item == 'E') {
-                        // For 'E', apply the offer where 2E gets 1B free
-                        int bCount = itemCounts.getOrDefault('B', 0);
-                        int bFreePrice = Math.min(bCount, offerCount) * prices.get('B');
-                        offerTotal -= bFreePrice;
+            Offer offer = offers.get(item);
+            if (offer != null) {
+                int offerCount = count / offer.getQuantity();
+                int remainder = count % offer.getQuantity();
+
+                if (item == 'E') {
+                    int bCount = itemCounts.getOrDefault('B', 0);
+                    int bFreeCount = offerCount; // 'B' free for each pair of 'E'
+                    if (bCount > 0) {
+                        bFreeCount = Math.min(bFreeCount, bCount);
+                        total += bFreeCount * prices.get('B');
+                        itemCounts.put('B', bCount - bFreeCount);
                     }
-                    maxTotal = Math.max(maxTotal, offerTotal);
                 }
-                total += maxTotal;
+
+                total += offerCount * offer.getPrice();
+                total += remainder * itemPrice;
             } else {
                 total += count * itemPrice;
             }
@@ -70,25 +71,8 @@ public class CheckoutSolution {
         return total;
     }
 
-    // Classe interna para representar uma oferta
-    private static class Offer {
-        private final int quantity;
-        private final int price;
-
-        public Offer(int quantity, int price) {
-            this.quantity = quantity;
-            this.price = price;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public int getPrice() {
-            return price;
-        }
-    }
 }
+
 
 
 

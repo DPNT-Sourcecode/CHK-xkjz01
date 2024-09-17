@@ -39,6 +39,7 @@ class CheckoutSolutionTest {
         assertEquals(120, CheckoutSolution.checkout("EEE")); // 80 + 40 = 120
         assertEquals(120, CheckoutSolution.checkout("EEEE")); // 80 + 40 = 120
         assertEquals(160, CheckoutSolution.checkout("EEEEEE")); // 80 + 80 = 160
+        assertEquals(160, CheckoutSolution.checkout("EEEEEEE")); // 80 + 80 = 160
     }
 
     @Test
@@ -48,7 +49,7 @@ class CheckoutSolutionTest {
         assertEquals(195, CheckoutSolution.checkout("AAABBBCC")); // 130 + 45 + 20 = 195
         assertEquals(195, CheckoutSolution.checkout("AAABBBCCC")); // Same as above, with extra C
         assertEquals(210, CheckoutSolution.checkout("AAABBBCCCD")); // 130 + 45 + 20 + 15 = 210
-        assertEquals(210, CheckoutSolution.checkout("AAABBBCCCDDD")); // 130 + 45 + 20 + 15 + 15 = 210
+        assertEquals(225, CheckoutSolution.checkout("AAABBBCCCDDD")); // 130 + 45 + 20 + 15 + 15 = 225
 
         // Testing 'E' with other items
         assertEquals(250, CheckoutSolution.checkout("AAABBBCCCDDEE")); // 130 + 45 + 20 + 15 + 40 + 80 = 250
@@ -70,6 +71,7 @@ class CheckoutSolutionTest {
         assertEquals(16000, CheckoutSolution.checkout("E".repeat(400))); // 80 + 80 + ... + 80
     }
 }
+
 
 
 
