@@ -71,7 +71,3 @@ class CheckoutSolutionTest {
         assertEquals(16000, CheckoutSolution.checkout("E".repeat(400))); // 80 + 80 + ... + 80
     }
 }
-
-
-
-
