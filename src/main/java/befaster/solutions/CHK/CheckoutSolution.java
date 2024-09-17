@@ -15,7 +15,7 @@ public class CheckoutSolution {
 
         // Ofertas
         offers.put('A', new Offer(3, 130));
-        offers.put('B', new Offer(2, 45));
+        offers.put('B', new Offer(2, 45)); // exemplo, se tiver oferta para B
     }
 
     public static int checkout(String items) {
@@ -59,4 +59,5 @@ public class CheckoutSolution {
         }
     }
 }
+
 
