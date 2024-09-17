@@ -5,74 +5,86 @@ import java.util.Map;
 
 public class CheckoutSolution {
 
-    // Tabela de preços e ofertas
-    private static final Map<Character, Integer> prices = new HashMap<>();
-    private static final Map<Character, Offer> offers = new HashMap<>();
-    private static final int INVALID_INPUT = -1;
+    private static final Map<Character, Integer> itemPrices = new HashMap<>();
+    private static final Map<Character, Integer> itemQuantities = new HashMap<>();
+    private static final Map<Character, Integer> discountQuantities = new HashMap<>();
+    private static final Map<Character, Integer> discountPrices = new HashMap<>();
+    private static final Map<Character, Character> freeItemOffers = new HashMap<>();
 
     static {
-        // Prices
-        prices.put('A', 50);
-        prices.put('B', 30);
-        prices.put('C', 20);
-        prices.put('D', 15);
-        prices.put('E', 40);
+        // Define prices for each item
+        itemPrices.put('A', 50);
+        itemPrices.put('B', 30);
+        itemPrices.put('C', 20);
+        itemPrices.put('D', 15);
+        itemPrices.put('E', 40);
 
-        // Offers
-        offers.put('A', new Offer(3, 130));  // 3A for 130
-        offers.put('B', new Offer(2, 45));   // 2B for 45
-        offers.put('E', new Offer(2, 80));   // 2E get 1B free
+        // Define discount quantities and prices for items
+        discountQuantities.put('A', 3);
+        discountPrices.put('A', 130);
+        discountQuantities.put('B', 2);
+        discountPrices.put('B', 45);
+        discountQuantities.put('E', 2);
+        discountPrices.put('E', 80);
+
+        // Define free item offers
+        freeItemOffers.put('E', 'B');
     }
 
     public static int checkout(String skus) {
         if (skus == null || skus.isEmpty()) {
-            return 0;  // Retorna 0 para cesta vazia
+            return 0;
         }
 
-        Map<Character, Integer> itemCounts = new HashMap<>();
-        int total = 0;
-
-        // Contagem de Itens
-        for (char item : skus.toCharArray()) {
-            if (!prices.containsKey(item)) {
-                return INVALID_INPUT;  // Retorna -1 para entrada inválida
+        // Count the quantity of each item
+        for (char sku : skus.toCharArray()) {
+            if (!itemPrices.containsKey(sku)) {
+                return -1; // Invalid item
             }
-            itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
+            itemQuantities.put(sku, itemQuantities.getOrDefault(sku, 0) + 1);
         }
 
-        // Processa ofertas especiais
-        // Aplica oferta de E (2E get 1B free)
-        int countE = itemCounts.getOrDefault('E', 0);
-        int freeBs = countE / 2;
-        int countB = itemCounts.getOrDefault('B', 0);
+        // Calculate the total price
+        int totalPrice = 0;
 
-        // Calcula quantos Bs serão gratuitos e ajusta a contagem de Bs
-        if (countB > 0) {
-            freeBs = Math.min(freeBs, countB);
-            total += freeBs * prices.get('B'); // Adiciona o valor dos Bs gratuitos
-            itemCounts.put('B', countB - freeBs); // Reduz a contagem de Bs
-        }
-
-        // Calcula o total para outros itens considerando ofertas
-        for (Map.Entry<Character, Integer> entry : itemCounts.entrySet()) {
+        for (Map.Entry<Character, Integer> entry : itemQuantities.entrySet()) {
             char item = entry.getKey();
-            int count = entry.getValue();
-            int itemPrice = prices.get(item);
+            int quantity = entry.getValue();
+            int price = itemPrices.get(item);
 
-            Offer offer = offers.get(item);
-            if (offer != null) {
-                int offerCount = count / offer.getQuantity();
-                int remainder = count % offer.getQuantity();
-
-                total += offerCount * offer.getPrice();
-                total += remainder * itemPrice;
+            // Apply discounts
+            if (discountQuantities.containsKey(item)) {
+                int discountQuantity = discountQuantities.get(item);
+                int discountPrice = discountPrices.get(item);
+                int discountedSets = quantity / discountQuantity;
+                int remainder = quantity % discountQuantity;
+                totalPrice += discountedSets * discountPrice + remainder * price;
             } else {
-                total += count * itemPrice;
+                totalPrice += quantity * price;
             }
         }
 
-        return total;
+        // Apply free item offers
+        for (Map.Entry<Character, Character> entry : freeItemOffers.entrySet()) {
+            char offerItem = entry.getKey();
+            char freeItem = entry.getValue();
+            int offerQuantity = itemQuantities.getOrDefault(offerItem, 0);
+            int freeQuantity = itemQuantities.getOrDefault(freeItem, 0);
+
+            int freeItemsGiven = offerQuantity / discountQuantities.getOrDefault(offerItem, 1);
+            int remainingFreeItems = freeQuantity - freeItemsGiven;
+
+            // Apply free items
+            if (remainingFreeItems < 0) {
+                totalPrice -= (remainingFreeItems * itemPrices.get(freeItem));
+            } else {
+                totalPrice -= (offerQuantity / discountQuantities.getOrDefault(offerItem, 1)) * itemPrices.get(freeItem);
+            }
+        }
+
+        return totalPrice;
     }
 }
+
 
 
