@@ -18,6 +18,7 @@ public class CheckoutSolution {
         prices.put('B', 30);
         prices.put('C', 20);
         prices.put('D', 15);
+        prices.put('E', 40);
 
         // Offers
         offers.put('A', new Offer(3, 130));  // 3A for 130
@@ -64,4 +65,3 @@ public class CheckoutSolution {
 
 
 }
-
