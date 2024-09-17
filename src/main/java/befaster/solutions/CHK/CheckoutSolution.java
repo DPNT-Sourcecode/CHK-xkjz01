@@ -21,7 +21,8 @@ public class CheckoutSolution {
 
         // Offers
         offers.put('A', new Offer(3, 130));  // 3A for 130
-        offers.put('B', new Offer(2, 45));   // 2B for 45
+        offers.put('B', new Offer(2, 45));
+
     }
 
     public static int checkout(String skus) {
@@ -63,3 +64,4 @@ public class CheckoutSolution {
 
 
 }
+
