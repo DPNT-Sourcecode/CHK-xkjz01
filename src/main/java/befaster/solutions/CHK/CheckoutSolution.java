@@ -11,13 +11,13 @@ public class CheckoutSolution {
     private static final Map<Character, Integer[]> offers = new HashMap<>();
 
     static {
-        // Definindo preços
+        // Prices
         prices.put('A', 50);
         prices.put('B', 30);
         prices.put('C', 20);
         prices.put('D', 15);
 
-        // Definindo ofertas
+        // Offers
         offers.put('A', new Integer[]{3, 130});  // 3A for 130
         offers.put('B', new Integer[]{2, 45});   // 2B for 45
     }
@@ -30,7 +30,7 @@ public class CheckoutSolution {
         Map<Character, Integer> itemCounts = new HashMap<>();
         int total = 0;
 
-        // Contagem de itens
+        // Itens Counting
         for (char item : skus.toCharArray()) {
             if (!prices.containsKey(item)) {
                 return -1;  // Retorna -1 para entrada inválida
@@ -62,5 +62,6 @@ public class CheckoutSolution {
         return total;
     }
 }
+
 
 
