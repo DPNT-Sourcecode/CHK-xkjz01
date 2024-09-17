@@ -8,7 +8,8 @@ class HelloSolutionTest {
     @Test
     public void testHello(){
         HelloSolution helloWorld = new HelloSolution();
-        assertEquals("Hello, World!", helloWorld.hello("World"));
+        assertEquals("Hello, Craftsman!", helloWorld.hello("Craftsman!"));
+        assertEquals("Hello, Mr. X!", helloWorld.hello("Mr. X!"));
     }
 
 }
